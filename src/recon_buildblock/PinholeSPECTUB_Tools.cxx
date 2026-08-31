@@ -736,6 +736,10 @@ void read_coll_params_mph( wmh_mph_type &wmh )
 	if( !stream1 ) error_wmtools_SPECT_mph( 122, 0, wmh.collim_fn );
     
     wmh.collim.model = wm_SPECT_read_value_1d ( &stream1, DELIMITER );
+    // added pinhole collimator type
+
+    token = wm_SPECT_read_value_1d(&stream1, DELIMITER);
+    wmh.collim.type = atof(token.c_str());
    
     token = wm_SPECT_read_value_1d ( &stream1, DELIMITER );
     wmh.collim.rad = atof ( token.c_str() );
@@ -770,6 +774,7 @@ void read_coll_params_mph( wmh_mph_type &wmh )
     stream1.close();
     
     info_stream << "Collimator parameters" << endl;
+    info_stream << "\nCollimator type: " << wmh.collim.type << endl;
     info_stream << "\nCollimator model: " << wmh.collim.model << endl;
 	info_stream << "Collimator rad: " << wmh.collim.rad << endl;
 	info_stream << "Number of holes: " << wmh.collim.Nht << endl;
@@ -792,6 +797,7 @@ void wm_SPECT_read_hvalues_mph( ifstream * stream1 , char DELIMITER, int * nh, b
     
     float max_hsxcm  = (float) 0.;
     float max_hszcm  = (float) 0.;
+    float max_hsycm = (float)0.;
     
     float max_aix  = (float) 0.;
     float max_aiz  = (float) 0.;
@@ -886,6 +892,18 @@ void wm_SPECT_read_hvalues_mph( ifstream * stream1 , char DELIMITER, int * nh, b
         h.dxcm = atof( token.c_str() );
         if ( h.dxcm > max_hsxcm ) max_hsxcm = h.dxcm;
         pos1  = pos3;
+
+        //... dimension y cm .......................
+
+        pos2 = line.find_first_not_of(" \t\f\v\n\r", pos1 + 1);
+        pos3 = line.find_first_of(" \t\f\v\n\r", pos2);
+        if (pos2 == string::npos)
+        error_wmtools_SPECT_mph(333, *nh, "dzcm");
+        token = line.substr(pos2, pos3 - pos2);
+        h.dycm = atof(token.c_str());
+        if (h.dzcm > max_hsycm)
+        max_hsycm = h.dycm;
+        pos1 = pos3;
         
         //... dimension z cm .......................
         

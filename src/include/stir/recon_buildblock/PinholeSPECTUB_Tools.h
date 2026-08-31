@@ -91,6 +91,7 @@ namespace SPECTUB_mph
         bool do_round; // true: round shape || false: rectangular shape
         float dxcm;    // horizontal size of the hole (cm): horizontal axis, diameter
         float dzcm;    // vertical size of the hole (cm): vertical axis, diameter
+        float dycm; //channel edge width (cm)
     
     } hole_type;
 
@@ -99,6 +100,7 @@ namespace SPECTUB_mph
     typedef struct
     {
         std::string model;      // cylindrical (cyl) or polygonal prism (pol)
+        std::string type; // knife-edge (knife) or channel-edge(channel)
 
         float rad;         // radius of cylinder containig holes (cyl) or apothem (pol)
         float L;           // collimator thickness

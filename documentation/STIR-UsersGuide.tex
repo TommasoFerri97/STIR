@@ -5123,7 +5123,7 @@ If this variable is set to 0 (default), only a single view is kept in memory. Th
 
 { \subsubsubsection{Pinhole SPECT UB} }
 \label{sec:projmatrixPinholeSPECTUB}
-This is a flexible implementation specific to pinhole-SPECT data acquired in circular orbits as illustrated in Fig.~\ref{PinholeSPECTUB_coords}. The code was written by Carles Falc\'{o}n and  integrated into STIR by Matthew Strugari to create the weight matrix for single- and multi-pinhole collimators in SPECT. The code calculates the contribution of each voxel of the image to each detector element (one per angle and ring) and includes the geometric projection (shadow of the collimator hole) as well as corrections for the spatially variant collimator-detector response function in terms of intrinsic  PSF, depth of interaction (DOI), attenuation inside the crystal, and attenuation inside the subject --- full (different attenuation factors for each bin of PSF) and simple (the same attenuation factor for the whole PSF). Information about detector and collimator characteristics are read from text files with a fixed structure. See Sec.~\ref{sec:projmatrixSPECTUB} and [Str22a], [Str22b], [Fus13], and [Fus14] for additional information. A sample of PinholeSPECTUB parameter files are given below and in the \texttt{STIR/examples/samples/} directory.
+This is a flexible implementation specific to pinhole-SPECT data acquired in circular orbits as illustrated in Fig.~\ref{PinholeSPECTUB_coords}. The code was written by Carles Falc\'{o}n to create the weight matrix for single- and multi-pinhole collimators in SPECT, integrated into STIR by Matthew Strugari, and subsequently extended by Tommaso Ferri to support channel-edge pinhole collimators. The code calculates the contribution of each voxel of the image to each detector element (one per angle and ring) and includes the geometric projection (shadow of the collimator hole) as well as corrections for the spatially variant collimator-detector response function in terms of intrinsic  PSF, depth of interaction (DOI), attenuation inside the crystal, and attenuation inside the subject --- full (different attenuation factors for each bin of PSF) and simple (the same attenuation factor for the whole PSF). Information about detector and collimator characteristics are read from text files with a fixed structure. See Sec.~\ref{sec:projmatrixSPECTUB} and [Str22a], [Str22b], [Fus13], and [Fus14] for additional information. A sample of PinholeSPECTUB parameter files are given below and in the \texttt{STIR/examples/samples/} directory.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -5264,22 +5264,25 @@ Information of collimator
 Comments are allowed here or anywhere in lines not containing parameters.
 Parameters are defined with a delimiting colon. Avoid using a colon elsewehere.
 Model (cyl/pol): pol
+Type (knife/channel): knife
 Collimator radius (cm): 2.8
 Wall thickness (cm): 1.
 #holes#
 Number of holes: 4
-nh / ind / x(cm) / y(cm) / z(cm) / shape(rect-round) / sizex(cm) / sizez(cm)
+nh / ind / x(cm) / y(cm) / z(cm) / shape(rect-round) / sizex(cm) / sizey(cm) / sizez(cm)
 / angx(deg) / angz(deg) / accx(deg) / accz(deg)
-h1:	1	0.	0.	0.	round	0.1	0.1	0.	0.	45.	45.
-h2:	2	0.	0.	0.	round	0.1	0.1	0.	0.	45.	45.
-h3:	3	0.	0.	0.	round	0.1	0.1	0.	0.	45.	45.
-h4:	4	0.	0.	0.	round	0.1	0.1	0.	0.	45.	45.
+h1:	1	0.	0.	0.	round	0.1	0.0	0.1	0.	0.	45.	45.
+h2:	2	0.	0.	0.	round	0.1	0.0	0.1	0.	0.	45.	45.
+h3:	3	0.	0.	0.	round	0.1	0.0	0.1	0.	0.	45.	45.
+h4:	4	0.	0.	0.	round	0.1	0.0	0.1	0.	0.	45.	45.
 \end{verbatim}
 
 { \subsubsubsubsection{Parameters} }
 \begin{description}
 
 \item[Model (cyl/pol):] The collimator could be either cylindrical or polygonal (flat faces). In both cases, the holes are supposed to be parallel to detector plane.
+
+\item[Type (knife/channel):] Specifies the pinhole geometry. The \texttt{knife} option models conventional knife-edge pinholes, whereas \texttt{channel} models channel-edge pinholes with a finite channel length. The knife-edge calculation is retained when the type is set to \texttt{knife} or when the channel length (i.e., the hole size in the radial y direction) is zero.
 
 \item[Collimator radius (cm):] In case of polygonal collimator, the radius refers to the apothem, i.e., radius of rotation. This is the radial distance from the central axis to the center of the face of the collimator.
 
@@ -5297,7 +5300,7 @@ h4:	4	0.	0.	0.	round	0.1	0.1	0.	0.	45.	45.
 
 \item[shape (rect-round):] rect or round depending on if the hole has rectangular or round shape, respectively.
 
-\item[x, z hole size (cm):] Hole dimensions in the x (transaxial) and z (axial) directions.
+\item[x, y, z hole size (cm):] Hole dimensions in the x (transaxial), y (radial), and z (axial) directions. The y dimension specifies the channel length for channel-edge pinholes.
 
 \item[x, z angle (deg):] Angle by which to tilt the central axis of the hole in the x and z directions. \textbf{Note:} The normal of a pinhole with a 0 $\mathrm{\deg}$ tilt lies along the y-axis (i.e., pointing toward the detector). A positive tilt angle will rotate the normal toward the indicated axis by the defined amount.
 

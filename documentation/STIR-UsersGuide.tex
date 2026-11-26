@@ -5123,7 +5123,7 @@ If this variable is set to 0 (default), only a single view is kept in memory. Th
 
 { \subsubsubsection{Pinhole SPECT UB} }
 \label{sec:projmatrixPinholeSPECTUB}
-This is a flexible implementation specific to pinhole-SPECT data acquired in circular orbits as illustrated in Fig.~\ref{PinholeSPECTUB_coords}. The code was written by Carles Falc\'{o}n to create the weight matrix for single- and multi-pinhole collimators in SPECT, integrated into STIR by Matthew Strugari, and subsequently extended by Tommaso Ferri to support channel-edge pinhole collimators. The code calculates the contribution of each voxel of the image to each detector element (one per angle and ring) and includes the geometric projection (shadow of the collimator hole) as well as corrections for the spatially variant collimator-detector response function in terms of intrinsic  PSF, depth of interaction (DOI), attenuation inside the crystal, and attenuation inside the subject --- full (different attenuation factors for each bin of PSF) and simple (the same attenuation factor for the whole PSF). Information about detector and collimator characteristics are read from text files with a fixed structure. See Sec.~\ref{sec:projmatrixSPECTUB} and [Str22a], [Str22b], [Fus13], and [Fus14] for additional information. A sample of PinholeSPECTUB parameter files are given below and in the \texttt{STIR/examples/samples/} directory.
+This is a flexible implementation specific to pinhole-SPECT data acquired in circular orbits as illustrated in Fig.~\ref{PinholeSPECTUB_coords}. The code was written by Carles Falc\'{o}n to create the weight matrix for single- and multi-pinhole collimators in SPECT, integrated into STIR by Matthew Strugari, and subsequently extended by Tommaso Ferri to support channel-edge pinhole collimators. The code calculates the contribution of each voxel of the image to each detector element (one per angle and ring) and includes the geometric projection (shadow of the collimator hole) as well as corrections for the spatially variant collimator-detector response function in terms of intrinsic  PSF, depth of interaction (DOI), attenuation inside the crystal, and attenuation inside the subject --- full (different attenuation factors for each bin of PSF) and simple (the same attenuation factor for the whole PSF). Information about detector and collimator characteristics are read from text files with a fixed structure. See Sec.~\ref{sec:projmatrixSPECTUB} and [Str23a], [Str23b], [Fus13], and [Fus14] for additional information. A sample of PinholeSPECTUB parameter files are given below and in the \texttt{STIR/examples/samples/} directory.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -5209,19 +5209,19 @@ See [Fus14] for an evaluation and more explanation.
 \end{description}
 
 { {\subsection*{{Detector file} }
-This file contains information about projections (see Fig.~\ref{PinholeSPECTUB_coords} for projection image orientation and angle criteria). Parameters are defined with a delimiting colon ``:". The labels before the colon are just information for users. The colon indicates the following value is a parameter to read, so it should be avoided in comments. The parameters should always keep the same order because they are read sequentially. The structure is demonstrated below with settings for the Cubresa Spark preclinical SPECT system in an aquisition with four projections over 360 degrees (see [Str22b]).
+This file contains information about projections (see Fig.~\ref{PinholeSPECTUB_coords} for projection image orientation and angle criteria). Parameters are defined with a delimiting colon ``:". The labels before the colon are just information for users. The colon indicates the following value is a parameter to read, so it should be avoided in comments. The parameters should always keep the same order because they are read sequentially. The structure is demonstrated below with settings for the Cubresa Spark preclinical SPECT system in an aquisition with four projections over 360 degrees (see [Str23b]).
 
 \begin{verbatim}
 Information of detector
 Comments are allowed here or anywhere in lines not containing parameters.
 Parameters are defined with a delimiting colon. Avoid using a colon elsewehere.
 # Sigma = FWHM/(2*sqrt(2*ln(2))) where FWHM = 0.85 mm
-# CsI at 140.5 keV from NIST
+# Attenuation coefficient for G4_CESIUM_IODIDE at 140.5 keV from GATE's MuMap Actor
 Number of rings: 1
 #intrinsic PSF#
 Sigma (cm): 0.0361
 Crystal thickness (cm): 0.3
-Crystal attenuation coefficient (cm -1): 4.407   
+Crystal attenuation coefficient (cm -1): 3.851   
 \#……repeat for each ring …………\#
 Nangles: 4
 ang0 (deg): 180.
@@ -5257,7 +5257,7 @@ z0 (cm): 0.
 \end{description}
 
 { {\subsection*{{Collimator file} }
-This file contains information about projections (see Fig.~\ref{PinholeSPECTUB_coords} for collimator/pinhole orientation and angle criteria). Parameters are defined with a delimiting colon. The labels before the colon are just information for users. The colon indicates the following value is a parameter to read, so it should be avoided in comments. The parameters should always keep the same order because they are read sequentially. The structure is demonstrated below with settings for the Cubresa Spark preclinical SPECT system in an aquisition with four projections over 360 degrees and a single-pinhole collimator (see [Str22b]).
+This file contains information about projections (see Fig.~\ref{PinholeSPECTUB_coords} for collimator/pinhole orientation and angle criteria). Parameters are defined with a delimiting colon. The labels before the colon are just information for users. The colon indicates the following value is a parameter to read, so it should be avoided in comments. The parameters should always keep the same order because they are read sequentially. The structure is demonstrated below with settings for the Cubresa Spark preclinical SPECT system in an aquisition with four projections over 360 degrees and a single-pinhole collimator (see [Str23b]).
 
 \begin{verbatim}
 Information of collimator
@@ -6065,10 +6065,9 @@ A smoothed EM approach to indirect estimation problems, with
 particular reference to stereology and emission tomography. \textit{J. 
 Roy. Stat. Soc}., 52: 271-324. 
 
-[Str22a] Strugari M, Falcon C, Erlandsson K, Hutton B, Reid G A, Pottie I, Darvesh S, Beyea S, Brewer K and Thielemans K, \textbf{(2022)} Integration of advanced 3D SPECT modelling for pinhole collimators into the open-source STIR framework, \textit{proc. IEEE MIC 2022}, Milan, Italy.
+[Str23a] Strugari M, Falcon C, Erlandsson K, Hutton B F, Brewer K, and Thielemans K, \textbf{(2023)} Integration of advanced 3D SPECT modelling for pinhole collimators into the open-source STIR framework, \textit{Front. Nucl. Med.}, \textbf{3}, 1134774. \url{https://doi.org/10.3389/fnume.2023.1134774}.
 
-[Str22b] Strugari M, DeBay D, Beyea S, and Brewer K, \textbf{(2022)} NEMA NU 1-2018 performance characterization and Monte Carlo model validation 
-of the Cubresa Spark SiPM-based preclinical spect scanner. \textit{EJNMMI Phys}. Preprint. \url{https://doi.org/10.21203/rs.3.rs-1946160/v1}{doi /10.21203/rs.3.rs-1946160/v1}.
+[Str23b] Strugari M E, DeBay D R, Beyea S D and Brewer K D, \textbf{(2023)} NEMA NU 1-2018 performance characterization and Monte Carlo model validation of the Cubresa Spark SiPM-based preclinical SPECT scanner, \textit{EJNMMI Phys.}, \textbf{10}, 35. \url{https://doi.org/10.1186/s40658-023-00555-6}.
 
 {[}Thi07{]} Thielemans K, Manjeshwar R, Tsoumpas C and Jansen F\textbf{(2007)}, 
 A new algorithm for scaling of PET scatter estimates using all coincidence events. 
